@@ -1,4 +1,5 @@
 const User = require("../../models/auth/auth.models");
+const { v4: uuidv4 } = require("uuid");
 
 async function handleUserSignup(req, res) {
   const { name, email, password } = req?.body;
@@ -28,6 +29,9 @@ async function handleUserLogin(req, res) {
       data: null,
     });
   }
+
+  const sessionId = uuidv4();
+
   return res.json({
     error: null,
     data: "Login Successfully",
