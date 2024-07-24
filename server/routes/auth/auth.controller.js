@@ -1,5 +1,6 @@
 const User = require("../../models/auth/auth.models");
 const { v4: uuidv4 } = require("uuid");
+const { setUser } = require("../../services/auth.service");
 
 async function handleUserSignup(req, res) {
   const { name, email, password } = req?.body;
@@ -31,6 +32,14 @@ async function handleUserLogin(req, res) {
   }
 
   const sessionId = uuidv4();
+  setUser(user, sessionId);
+  res.cookie("uid", sessionId, {
+    httpOnly: true,
+    secure: false,
+    maxAge: 24 * 60 * 60 * 1000,
+  });
+  Object.assign(user, { uid: sessionId });
+  await user.save();
 
   return res.json({
     error: null,
