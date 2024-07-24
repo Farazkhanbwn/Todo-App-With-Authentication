@@ -14,7 +14,6 @@ export interface AuthInterface {
   loading: boolean;
   auth: (email: string, password: string) => Promise<void>;
   signout: () => Promise<void>;
-  googleSignOn: () => Promise<void>;
   getAuthToken: () => string;
   authErrors: Record<string, string>;
   user: AuthUser | null;
@@ -27,7 +26,6 @@ export const authStateDefaultValues: AuthInterface = {
   loading: true,
   auth: async (email: string, password: string) => {},
   signout: async () => {},
-  googleSignOn: async () => {},
   getAuthToken: () => "",
   authErrors: {},
   user: null,
