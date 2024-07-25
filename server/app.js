@@ -25,7 +25,7 @@ app.use("/todo", restrictToLoggedinUserOnly, todoRoute);
 app.post("/login", handleUserLogin);
 
 app.get("/", (_, res) => {
-  res.send("<h1>Main route accessible</h1>");
+  res.send("<h1>Main Route Accessible</h1>");
 });
 
 module.exports = app;
