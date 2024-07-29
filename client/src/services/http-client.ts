@@ -1,6 +1,7 @@
 import { HttpRequestMethods } from "@/shared/types";
 
-const API_ENDPOINT = process.env?.NEXT_PUBLIC_MOCK_API;
+// const API_ENDPOINT = process.env?.NEXT_PUBLIC_MOCK_API;
+const API_ENDPOINT = "http://localhost:4000";
 const headerConfig = {
   "content-Type": "application/json",
 };
@@ -14,6 +15,7 @@ class HttpClient {
         ...headerConfig,
         ...headers,
       },
+      credentials: "include",
     });
     const response = await request.json();
     return response;
@@ -30,6 +32,7 @@ class HttpClient {
         ...headerConfig,
         ...headers,
       },
+      credentials: "include",
       body: JSON.stringify(body),
     });
     const response = await request.json();

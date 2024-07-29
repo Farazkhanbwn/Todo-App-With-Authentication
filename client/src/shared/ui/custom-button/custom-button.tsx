@@ -44,6 +44,7 @@ const CustomButton: FC<CustomButtonProps> = ({
       disabled={disabled}
       danger={danger}
       onClick={onButtonClick}
+      loading={loading}
     >
       {title}
     </AntButton>

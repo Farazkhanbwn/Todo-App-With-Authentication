@@ -3,6 +3,8 @@ import React, { ChangeEvent, useState } from 'react'
 import CustomInput from '@/shared/ui/custom-input/custom-input'
 import CustomButton from '@/shared/ui/custom-button/custom-button'
 import axios from 'axios'
+import { useRouter } from 'next/navigation'
+import { useAuthContext } from '@/context/auth-context/auth-context'
 
 interface UserCredentials {
     email: string
@@ -10,12 +12,14 @@ interface UserCredentials {
 }
 
 const Login = () => {
+    const {} = useAuthContext()
     const [userCredentials, setUserCredentials] = useState<UserCredentials>({ email: '', password: '' })
+    const router = useRouter()
 
     const handleSubmit = async () => {
         try {
             const res = await axios.post(
-                'http://localhost:8000/login',
+                'http://localhost:4000/login',
                 {
                     email: userCredentials.email,
                     password: userCredentials.password,

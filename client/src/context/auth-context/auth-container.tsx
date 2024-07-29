@@ -1,3 +1,4 @@
+"use client";
 import {
   FC,
   PropsWithChildren,
@@ -8,30 +9,31 @@ import {
 import { usePathname, useRouter } from "next/navigation";
 import { authStateDefaultValues, AuthType } from "./auth-interface";
 import AuthService from "@/services/auth-service";
+import { AuthProvider } from "./auth-context";
 
 const AuthContainer: FC<PropsWithChildren> = ({ children }) => {
   const [authState, setAuthState] = useState(authStateDefaultValues);
   const router = useRouter();
   const pathname = usePathname();
-  const isOnAuthPath = pathname.includes("auth");
+  const isOnAuthPath = pathname.includes("login");
   const { current: respectiveAuthService } = useRef({
     //   [AuthType.SIGNIN]: AuthService.signinWithEmailAndPasssword,
     //   [AuthType.SIGNUP]: AuthService.signupWithEmailAndPasssword,
   });
 
   const checkAuthOnLoad = async () => {
-    const { isAuthenticated, user } = await AuthService.get(""); //.validateAuth()
+    const { isAuthenticated, data } = await AuthService.validateAuth();
     if (!isAuthenticated && !isOnAuthPath) {
-      router.push("/auth");
+      router.push("/login");
     }
     if (isAuthenticated && isOnAuthPath) {
-      router.push("/");
+      router.push("/home");
     }
     setAuthState((prevState) => ({
       ...prevState,
       loading: false,
       isAuthenticated,
-      user,
+      user: data,
     }));
   };
 
@@ -69,20 +71,20 @@ const AuthContainer: FC<PropsWithChildren> = ({ children }) => {
   //   return
   // }
 
-  // const googleSignOn = async () => {
-  //   const { isSignedIn, userData } = await AuthService.signOnUsingGoogle()
-  //   if (isSignedIn) {
-  //     setAuthState((prevState) => ({
-  //       ...prevState,
-  //       user: userData,
-  //     }))
-  //     router.push('/')
-  //     return
-  //   }
-  //   setErrorInState({
-  //     form: 'Google SignOn failed...',
-  //   })
-  // }
+  const loginUser = async (email: string, password: string) => {
+    const { isAuthenticated, data } = await AuthService.login(email, password);
+    if (isAuthenticated) {
+      setAuthState((prevState) => ({
+        ...prevState,
+        user: data,
+      }));
+      router.push("/");
+      return;
+    }
+    setErrorInState({
+      form: "Google SignOn failed...",
+    });
+  };
 
   // const signout = async () => {
   //   await AuthService.signout()
@@ -93,17 +95,29 @@ const AuthContainer: FC<PropsWithChildren> = ({ children }) => {
   //   })
   // }
 
-  // const changeAuthType = (authType: AuthType) => {
-  //   setAuthState((prevState) => ({
-  //     ...prevState,
-  //     authType,
-  //   }))
-  // }
+  const signUp = async (email: string, password: string) => {
+    const { error, data } = await AuthService.signUp(email, password);
+    if (data) {
+      setAuthState((prevState) => ({
+        ...prevState,
+        user: data,
+      }));
+      router.push("/");
+      return;
+    }
+    setErrorInState({
+      form: "SignOn failed...",
+    });
+  };
 
   if (authState.loading) {
     return null;
   }
-  // return <AuthProvider value={{ ...authState, auth, signout, changeAuthType, googleSignOn }}>{children}</AuthProvider>
+  return (
+    <AuthProvider value={{ ...authState, loginUser, signUp }}>
+      {children}
+    </AuthProvider>
+  );
 };
 
 export default AuthContainer;

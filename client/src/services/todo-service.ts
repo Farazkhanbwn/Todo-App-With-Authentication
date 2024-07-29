@@ -1,8 +1,9 @@
+import { describe } from "node:test";
 import HttpClient from "./http-client";
 
 enum TODOPATH {
-  TODOS = "/todos",
-  DELETE_TODO = "/todos/:id",
+  TODOS = "/todo",
+  DELETE_TODO = "/todo/:id",
 }
 
 class TodoService extends HttpClient {
@@ -16,9 +17,10 @@ class TodoService extends HttpClient {
     }
   }
 
-  static async addTodo(name: string) {
+  static async addTodo(name: string, description: string) {
     try {
-      const response = await this.post(TODOPATH.TODOS, { name });
+      const response = await this.post(TODOPATH.TODOS, { name, description });
+      console.log("response from todo is : ", response);
       return response;
     } catch (error) {
       console.error("Error adding todo:", error);
@@ -26,9 +28,12 @@ class TodoService extends HttpClient {
     }
   }
 
-  static async updateTodo(id: string, name: string) {
+  static async updateTodo(id: string, name?: string, description?: string) {
     try {
-      const response = await this.patch(`${TODOPATH.TODOS}/${id}`, { name });
+      const response = await this.patch(`${TODOPATH.TODOS}/${id}`, {
+        name,
+        description,
+      });
       return response;
     } catch (error) {
       console.error("Error updating todo:", error);
