@@ -1,17 +1,16 @@
 import { useTodoContext } from "@/context/todo-context/todo-context";
 import CustomButton from "@/shared/ui/custom-button/custom-button";
 import CustomInput from "@/shared/ui/custom-input/custom-input";
+import axios from "axios";
 import React, { ChangeEvent, useState } from "react";
 
 const AddTodoForm = () => {
-  const { addTodo, todoErrors } = useTodoContext();
+  const { todoErrors, todoList, getAllTodos } = useTodoContext();
   const [loading, setloading] = useState<boolean>(false);
   const [formState, setFormState] = useState({
     name: "",
     description: "",
   });
-
-  console.log("add form rerendered");
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e?.target;
@@ -22,17 +21,38 @@ const AddTodoForm = () => {
     }));
   };
 
+  const addTodo = async () => {
+    try {
+      const response = await axios.get("http://localhost:4000/todo", {
+        withCredentials: true,
+      });
+      console.log("response from todo is:", response.data);
+      return response;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error("Axios error message:", error.message);
+        console.error("Axios error response:", error.response);
+      } else {
+        console.error("Error adding todo:", error);
+      }
+      throw error;
+    }
+  };
+
   const addNewTodo = async () => {
     setloading(true);
     const { name, description } = formState;
-    await addTodo(name, description, () => {
-      setloading(false);
-      setFormState((prev) => ({
-        ...prev,
-        description: "",
-        name: "",
-      }));
-    });
+
+    await getAllTodos();
+
+    // await addTodo(name, description, () => {
+    //   setloading(false);
+    //   setFormState((prev) => ({
+    //     ...prev,
+    //     description: "",
+    //     name: "",
+    //   }));
+    // });
   };
 
   return (
@@ -42,6 +62,7 @@ const AddTodoForm = () => {
       <CustomInput
         name="name"
         type="text"
+        value={formState.name}
         label="Name*"
         placeholder="Pls Write Name Here"
         onChange={handleChange}
@@ -51,6 +72,7 @@ const AddTodoForm = () => {
         name="description"
         type="text"
         label="Description*"
+        value={formState.description}
         placeholder="Pls Write Descripiton"
         onChange={handleChange}
       />
@@ -61,7 +83,7 @@ const AddTodoForm = () => {
         loading={loading}
         type="primary"
         classNames="mt-2"
-        onClick={addNewTodo}
+        onClick={addTodo}
       />
     </div>
   );
