@@ -34,7 +34,7 @@ const CustomInput: FC<CustomInputProps> = ({
   return (
     <div className={`${classes[`custom-input`]} ${className}`}>
       {label && (
-        <label className={classes["custom-input__label"]}>{label}:</label>
+        <label className={classes["custom-input__label"]}>{label}</label>
       )}
 
       <input

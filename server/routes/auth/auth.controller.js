@@ -5,6 +5,17 @@ const { setUser } = require("../../services/auth.service");
 async function handleUserSignup(req, res) {
   const { name, email, password } = req?.body;
 
+  const user = await User.findOne({
+    email,
+  });
+
+  if (user) {
+    return res.json({
+      data: null,
+      error: "User Already Exist",
+    });
+  }
+
   await User.create({
     name,
     email,
@@ -47,7 +58,37 @@ async function handleUserLogin(req, res) {
   });
 }
 
+const isUserRegisterd = async (req, res) => {
+  const cookieId = req?.cookies?.uid;
+
+  if (!cookieId) {
+    return res.json({
+      error: "Cookie Id is Undefined",
+      data: null,
+    });
+  }
+
+  const user = await User.findOne(
+    {
+      uid: cookieId,
+    },
+    { uid: 0, __v: 0, _id: 0, password: 0 }
+  );
+
+  if (user) {
+    return res.json({
+      error: null,
+      data: user,
+    });
+  }
+  return res.json({
+    error: "No User Found",
+    data: null,
+  });
+};
+
 module.exports = {
   handleUserSignup,
   handleUserLogin,
+  isUserRegisterd,
 };

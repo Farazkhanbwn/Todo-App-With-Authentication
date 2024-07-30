@@ -3,6 +3,8 @@ const { todos } = require("../../models/todos/todos.models");
 async function addNewTodo(req, res) {
   const { name, description } = req?.body;
 
+  console.log("req body is : ", req?.body);
+
   if (!name || !description) {
     return res.json({
       error: "Please write Name & Description",
@@ -10,7 +12,7 @@ async function addNewTodo(req, res) {
     });
   }
 
-  await todos.create({
+  const newUser = await todos.create({
     name,
     description,
   });

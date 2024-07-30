@@ -12,11 +12,12 @@ export enum AuthType {
 export interface AuthInterface {
   isAuthenticated: boolean;
   loading: boolean;
-  auth: (email: string, password: string) => Promise<void>;
+  loginUser: (email: string, password: string) => Promise<void>;
   signout: () => Promise<void>;
   getAuthToken: () => string;
   authErrors: Record<string, string>;
   user: AuthUser | null;
+  signUp: (email: string, password: string) => Promise<void>;
   authType: AuthType;
   changeAuthType: (authType: AuthType) => void;
 }
@@ -24,7 +25,8 @@ export interface AuthInterface {
 export const authStateDefaultValues: AuthInterface = {
   isAuthenticated: false,
   loading: true,
-  auth: async (email: string, password: string) => {},
+  loginUser: async (email: string, password: string) => {},
+  signUp: async (email: string, password: string) => {},
   signout: async () => {},
   getAuthToken: () => "",
   authErrors: {},
