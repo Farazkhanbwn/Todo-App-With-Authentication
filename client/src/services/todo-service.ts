@@ -12,7 +12,7 @@ class TodoService extends HttpClient {
       const response = await this.get(TODOPATH.TODOS);
       return response;
     } catch (error) {
-      console.error("Error fetching todos:", error);
+      console.error("Error Fetching Todos: ", error);
       throw error;
     }
   }
@@ -28,12 +28,14 @@ class TodoService extends HttpClient {
     }
   }
 
-  static async updateTodo(id: string, name?: string, description?: string) {
+  static async updateTodo(id: string, updates: {}) {
     try {
-      const response = await this.patch(`${TODOPATH.TODOS}/${id}`, {
-        name,
-        description,
-      });
+      const response = await this.post(
+        `${TODOPATH.DELETE_TODO.replace(":id", id)}`,
+        {
+          ...updates,
+        }
+      );
       return response;
     } catch (error) {
       console.error("Error updating todo:", error);
@@ -43,7 +45,10 @@ class TodoService extends HttpClient {
 
   static async deleteTodo(id: string) {
     try {
-      const response = await this.delete(`${TODOPATH.TODOS}/${id}`);
+      const response = await this.get(
+        `${TODOPATH.DELETE_TODO.replace(":id", id)}`
+      );
+      console.log("response is : ", response);
       return response;
     } catch (error) {
       console.error("Error deleting todo:", error);

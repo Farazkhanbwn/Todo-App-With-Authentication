@@ -6,7 +6,7 @@ import React, {
   useLayoutEffect,
   useState,
 } from "react";
-import { todoStateDefaultValues } from "./todo-interface";
+import { Todo, todoStateDefaultValues } from "./todo-interface";
 import TodoService from "@/services/todo-service";
 import { TodoProvider } from "./todo-context";
 
@@ -39,7 +39,7 @@ const TodoContainer: FC<PropsWithChildren> = ({ children }) => {
       const { data, error } = await TodoService.addTodo(name, description);
       setTodoState((prev) => ({
         ...prev,
-        todoList: [...prev.todoList, data],
+        todoList: [data, ...prev.todoList],
         todoErrors: error,
       }));
     } catch (error) {
@@ -49,50 +49,68 @@ const TodoContainer: FC<PropsWithChildren> = ({ children }) => {
     }
   };
 
-  const deleteTodo = async (id: string) => {
+  const deleteTodo = async (id: string, callback: () => void) => {
     try {
       const { data, error } = await TodoService.deleteTodo(id);
       if (data) {
         setTodoState((prev) => ({
           ...prev,
-          todoList: prev?.todoList?.filter((todo) => todo?.id !== id),
+          todoList: prev?.todoList?.filter((todo) => todo?._id !== id),
           todoErrors: error,
         }));
       }
-    } catch {}
+    } catch (error) {
+      console.log("error message ", error);
+    } finally {
+      callback();
+    }
   };
 
-  //   const updateTodo = async (
-  //     id: string,
-  //     name?: string,
-  //     description?: string
-  //   ) => {
-  //     try {
-  //       const { data, error } = await TodoService.updateTodo(
-  //         id,
-  //         name,
-  //         description
-  //       );
-  //       if (data) {
-  //         setTodoState((prev) => ({
-  //           ...prev,
-  //           todoList: [
-  //             ...prev.todoList,
-  //             {
-  //               id,
-  //               name,
-  //               description,
-  //             },
-  //           ],
-  //         }));
-  //       }
-  //     } catch (error) {
-  //       console.log("error value is : ", error);
-  //     }
-  //   };
+  const updateTodo = async (
+    id: string,
+    updates: Partial<Todo>,
+    callback: () => void
+  ) => {
+    try {
+      const { data, error } = await TodoService.updateTodo(id, updates);
+      if (data) {
+        setTodoState((prev) => ({
+          ...prev,
+          todoList: prev.todoList.map((todo) =>
+            todo._id === id ? { ...todo, ...updates } : todo
+          ),
+        }));
+      }
+    } catch (error) {
+      console.log("error value is:", error);
+    } finally {
+      callback();
+      setTodoState((prev) => ({
+        ...prev,
+        selectedTodo: null,
+      }));
+    }
+  };
+
+  const selectTodo = (id: string) => {
+    const filterTodo = todoState?.todoList?.filter((todo) => todo?._id === id);
+    setTodoState((prev) => ({
+      ...prev,
+      selectedTodo: filterTodo[0],
+    }));
+  };
 
   return (
-    <TodoProvider value={{ ...todoState, getAllTodos, addTodo, deleteTodo }}>
+    <TodoProvider
+      value={{
+        ...todoState,
+        getAllTodos,
+        addTodo,
+        deleteTodo,
+        updateTodo,
+        selectTodo,
+      }}
+    >
       {children}
     </TodoProvider>
   );

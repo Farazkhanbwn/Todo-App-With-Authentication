@@ -6,20 +6,20 @@ import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import { useAuthContext } from '@/context/auth-context/auth-context'
 
-// interface UserCredentials {
-//     email: string
-//     password: string
-// }
+interface UserCredentials {
+    email: string
+    password: string
+}
 
 const Login = () => {
     const {} = useAuthContext()
-    const [userCredentials, setUserCredentials] = useState({ email: '', password: '' })
+    const [userCredentials, setUserCredentials] = useState<UserCredentials>({ email: '', password: '' })
     const router = useRouter()
 
     const handleSubmit = async () => {
         try {
             const res = await axios.post(
-                'http://localhost:4000/login',
+                'http://localhost:8000/login',
                 {
                     email: userCredentials.email,
                     password: userCredentials.password,

@@ -65,6 +65,7 @@ class HttpClient {
         ...headerConfig,
         ...headers,
       },
+      credentials: 'include'
     });
     const response = await request.json();
     return response;
