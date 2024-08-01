@@ -44,7 +44,6 @@ class AuthService extends HttpClient {
   static async validateAuth() {
     try {
       const user = await this.get(MockService.AUTH);
-      console.log("user is : from mockservice " , user)
       if (user?.data) {
         return {
           isAuthenticated: true,

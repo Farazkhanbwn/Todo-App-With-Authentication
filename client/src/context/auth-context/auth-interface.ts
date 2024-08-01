@@ -24,7 +24,7 @@ export interface AuthInterface {
 
 export const authStateDefaultValues: AuthInterface = {
   isAuthenticated: false,
-  loading: true,
+  loading: false,
   loginUser: async (email: string, password: string) => {},
   signUp: async (email: string, password: string) => {},
   signout: async () => {},

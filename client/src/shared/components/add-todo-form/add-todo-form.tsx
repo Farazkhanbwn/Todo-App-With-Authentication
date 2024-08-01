@@ -2,15 +2,24 @@ import { useTodoContext } from "@/context/todo-context/todo-context";
 import CustomButton from "@/shared/ui/custom-button/custom-button";
 import CustomInput from "@/shared/ui/custom-input/custom-input";
 import axios from "axios";
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 
 const AddTodoForm = () => {
-  const { todoErrors, todoList, getAllTodos } = useTodoContext();
-  const [loading, setloading] = useState<boolean>(false);
+  const { addTodo, selectedTodo, updateTodo } = useTodoContext();
+  const [loading, setLoading] = useState<boolean>(false);
   const [formState, setFormState] = useState({
     name: "",
     description: "",
   });
+
+  useEffect(() => {
+    if (selectedTodo) {
+      setFormState({
+        name: selectedTodo.name,
+        description: selectedTodo.description,
+      });
+    }
+  }, [selectedTodo]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e?.target;
@@ -21,43 +30,27 @@ const AddTodoForm = () => {
     }));
   };
 
-  const addTodo = async () => {
-    try {
-      const response = await axios.get("http://localhost:4000/todo", {
-        withCredentials: true,
-      });
-      console.log("response from todo is:", response.data);
-      return response;
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        console.error("Axios error message:", error.message);
-        console.error("Axios error response:", error.response);
-      } else {
-        console.error("Error adding todo:", error);
-      }
-      throw error;
-    }
-  };
-
-  const addNewTodo = async () => {
-    setloading(true);
+  const handleSubmit = async () => {
+    setLoading(true);
     const { name, description } = formState;
 
-    await getAllTodos();
+    const callback = () => {
+      setLoading(false);
+      setFormState({ name: "", description: "" });
+    };
 
-    // await addTodo(name, description, () => {
-    //   setloading(false);
-    //   setFormState((prev) => ({
-    //     ...prev,
-    //     description: "",
-    //     name: "",
-    //   }));
-    // });
+    if (selectedTodo) {
+      await updateTodo(selectedTodo._id, {name, description} , callback);
+    } else {
+      await addTodo(name, description, callback);
+    }
   };
 
   return (
     <div className="max-w-lg mx-auto flex flex-col gap-4">
-      <h2 className="text-center text-3xl mb-5 font-semibold">Add New Task</h2>
+      <h2 className="text-center text-3xl mb-5 font-semibold">
+        {selectedTodo ? "Update Task" : "Add New Task"}
+      </h2>
 
       <CustomInput
         name="name"
@@ -78,12 +71,12 @@ const AddTodoForm = () => {
       />
 
       <CustomButton
-        title="Add Todo"
+        title={selectedTodo ? "Update Todo" : "Add Todo"}
         disabled={false}
         loading={loading}
         type="primary"
         classNames="mt-2"
-        onClick={addTodo}
+        onClick={handleSubmit}
       />
     </div>
   );

@@ -1,0 +1,16 @@
+/* styles.css */
+.table {
+    max-width: 40rem;
+    margin: auto;
+}
+
+.table th,
+.table td {
+    border: 2px solid #63b3ed;
+    padding: 0.5rem;
+    text-align: center;
+}
+
+.table th {
+    font-weight: bold;
+}

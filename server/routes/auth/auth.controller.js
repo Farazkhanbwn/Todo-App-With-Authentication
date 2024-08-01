@@ -1,6 +1,7 @@
 const User = require("../../models/auth/auth.models");
 const { v4: uuidv4 } = require("uuid");
 const { setUser } = require("../../services/auth.service");
+const { encryptTextData, isEncryptedDataValid } = require("../../utils/utils");
 
 async function handleUserSignup(req, res) {
   const { name, email, password } = req?.body;
@@ -16,10 +17,12 @@ async function handleUserSignup(req, res) {
     });
   }
 
+  const hashPassword = await encryptTextData(password);
+
   await User.create({
     name,
     email,
-    password,
+    password: hashPassword,
   });
   return res.json({
     error: null,
@@ -35,7 +38,10 @@ async function handleUserLogin(req, res) {
     password,
   });
 
-  if (!user) {
+  const isPasswordValid =
+    !!user && isEncryptedDataValid(password, user?.password);
+
+  if (!user || !isPasswordValid) {
     return res.json({
       error: "incorrect email and password",
       data: null,
