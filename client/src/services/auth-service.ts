@@ -11,10 +11,14 @@ enum MockService {
 class AuthService extends HttpClient {
   static async signUp(email: string, password: string) {
     try {
-      const response = await this.post(MockService.SIGNUP, { email, password });
+      const { data, errors } = await this.post(MockService.SIGNUP, {
+        email,
+        password,
+      });
+
       return {
-        data: response,
-        error: null,
+        data: data?.token,
+        error: errors,
       };
     } catch (error) {
       return {
@@ -26,11 +30,14 @@ class AuthService extends HttpClient {
 
   static async login(email: string, password: string) {
     try {
-      const response = await this.post(MockService.login, { email, password });
+      const { data, errors } = await this.post(MockService.login, {
+        email,
+        password,
+      });
       return {
         isAuthenticated: true,
-        data: response,
-        error: null,
+        data: data?.token,
+        error: errors,
       };
     } catch (error) {
       return {
@@ -41,13 +48,15 @@ class AuthService extends HttpClient {
     }
   }
 
-  static async validateAuth() {
+  static async validateAuth(token: string) {
     try {
-      const user = await this.get(MockService.AUTH);
-      if (user?.data) {
+      const { data } = await this.get(MockService.AUTH, {
+        ...(token && { authorization: `bearer ${token}` }),
+      });
+      if (data?.isValidUser) {
         return {
           isAuthenticated: true,
-          data: user,
+          data: null,
           error: null,
         };
       }

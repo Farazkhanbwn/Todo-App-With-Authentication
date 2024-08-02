@@ -8,10 +8,12 @@ const Home = () => {
     return (
         <div>
             {/* Add Todo */}
-            <AddTodoForm />
+            {/* <AddTodoForm /> */}
+
+            <h1>Todo List</h1>
 
             {/* Get All Todos */}
-            <TodoList />
+            {/* <TodoList /> */}
         </div>
     )
 }

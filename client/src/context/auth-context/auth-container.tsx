@@ -22,7 +22,8 @@ const AuthContainer: FC<PropsWithChildren> = ({ children }) => {
   });
 
   const checkAuthOnLoad = async () => {
-    const { isAuthenticated, data } = await AuthService.validateAuth();
+    const token = localStorage.getItem("token") ?? "";
+    const { isAuthenticated, data } = await AuthService.validateAuth(token);
     if (!isAuthenticated && !isOnAuthPath) {
       router.push("/login");
     }
@@ -73,12 +74,13 @@ const AuthContainer: FC<PropsWithChildren> = ({ children }) => {
 
   const loginUser = async (email: string, password: string) => {
     const { isAuthenticated, data } = await AuthService.login(email, password);
+    localStorage.setItem("token", data);
     if (isAuthenticated) {
       setAuthState((prevState) => ({
         ...prevState,
         user: data,
       }));
-      router.push("/");
+      router.push("/home");
       return;
     }
     setErrorInState({

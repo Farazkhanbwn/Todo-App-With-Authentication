@@ -2,37 +2,19 @@
 import React, { ChangeEvent, useState } from 'react'
 import CustomInput from '@/shared/ui/custom-input/custom-input'
 import CustomButton from '@/shared/ui/custom-button/custom-button'
-import axios from 'axios'
-import { useRouter } from 'next/navigation'
 import { useAuthContext } from '@/context/auth-context/auth-context'
-
 interface UserCredentials {
     email: string
     password: string
 }
 
 const Login = () => {
-    const {} = useAuthContext()
+    const { loginUser } = useAuthContext()
     const [userCredentials, setUserCredentials] = useState<UserCredentials>({ email: '', password: '' })
-    const router = useRouter()
 
     const handleSubmit = async () => {
-        try {
-            const res = await axios.post(
-                'http://localhost:8000/login',
-                {
-                    email: userCredentials.email,
-                    password: userCredentials.password,
-                },
-                { withCredentials: true },
-            )
-
-            console.log('response data is : ', res.data)
-        } catch (error) {
-            console.log('Error is : ', error)
-        } finally {
-            console.log('Finally run')
-        }
+        const { email, password } = userCredentials
+        await loginUser(email, password)
     }
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
