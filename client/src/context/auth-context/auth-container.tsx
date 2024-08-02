@@ -78,7 +78,7 @@ const AuthContainer: FC<PropsWithChildren> = ({ children }) => {
         ...prevState,
         user: data,
       }));
-      router.push("/");
+      router.push("/home");
       return;
     }
     setErrorInState({
