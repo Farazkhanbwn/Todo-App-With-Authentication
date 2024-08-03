@@ -12,27 +12,29 @@ interface UserCredentials {
 }
 
 const Login = () => {
-    const {} = useAuthContext()
+    const { loginUser } = useAuthContext()
     const [userCredentials, setUserCredentials] = useState<UserCredentials>({ email: '', password: '' })
     const router = useRouter()
 
     const handleSubmit = async () => {
-        try {
-            const res = await axios.post(
-                'http://localhost:8000/login',
-                {
-                    email: userCredentials.email,
-                    password: userCredentials.password,
-                },
-                { withCredentials: true },
-            )
+        const { email, password } = userCredentials
+        await loginUser(email, password)
+        // try {
+        //     const res = await axios.post(
+        //         'http://localhost:8000/login',
+        //         {
+        //             email: userCredentials.email,
+        //             password: userCredentials.password,
+        //         },
+        //         { withCredentials: true },
+        //     )
 
-            console.log('response data is : ', res.data)
-        } catch (error) {
-            console.log('Error is : ', error)
-        } finally {
-            console.log('Finally run')
-        }
+        //     console.log('response data is : ', res.data)
+        // } catch (error) {
+        //     console.log('Error is : ', error)
+        // } finally {
+        //     console.log('Finally run')
+        // }
     }
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {

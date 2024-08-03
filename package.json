@@ -4,7 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev:server": "npm --prefix=server run start",
+    "dev:client": "npm --prefix=client run dev",
+    "dev": "npx npm-run-all --parallel dev:server dev:client",
+    "dev-server:install": "npm --prefix=server install",
+    "dev-client:install": "npm --prefix=client install",
+    "install": "npm-run-all --parallel dev-server:install dev-client:install"
   },
   "keywords": [],
   "author": "",
