@@ -5,15 +5,15 @@ import AddTodoForm from '@/shared/components/add-todo-form/add-todo-form'
 import TodoList from '@/shared/components/todo-list/todo-list'
 
 const Home = () => {
-    return (
-        <div>
-            {/* Add Todo */}
-            <AddTodoForm />
+  return (
+    <div>
+      {/* Add Todo */}
+      <AddTodoForm />
 
-            {/* Get All Todos */}
-            <TodoList />
-        </div>
-    )
+      {/* Get All Todos */}
+      <TodoList />
+    </div>
+  )
 }
 
 export default withTodoContainer(Home)
