@@ -1,10 +1,11 @@
-import { HttpRequestMethods } from "@/shared/types";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { HttpRequestMethods } from '@/shared/types'
 
 // const API_ENDPOINT = process.env?.NEXT_PUBLIC_MOCK_API;
-const API_ENDPOINT = "http://localhost:8000";
+const API_ENDPOINT = 'http://localhost:8000'
 const headerConfig = {
-  "content-Type": "application/json",
-};
+  'content-Type': 'application/json',
+}
 
 class HttpClient {
   // Get Method
@@ -15,36 +16,28 @@ class HttpClient {
         ...headerConfig,
         ...headers,
       },
-      credentials: "include",
-    });
-    const response = await request.json();
-    return response;
+      credentials: 'include',
+    })
+    const response = await request.json()
+    return response
   }
   // Post Method
-  static async post(
-    resourcePath: string,
-    body: any,
-    headers?: Record<string, string>
-  ) {
+  static async post(resourcePath: string, body: any, headers?: Record<string, string>) {
     const request = await fetch(`${API_ENDPOINT}${resourcePath}`, {
       method: HttpRequestMethods.POST,
       headers: {
         ...headerConfig,
         ...headers,
       },
-      credentials: "include",
+      credentials: 'include',
       body: JSON.stringify(body),
-    });
-    const response = await request.json();
-    return response;
+    })
+    const response = await request.json()
+    return response
   }
 
   // PUT Method
-  static async patch(
-    resourcePath: string,
-    body: any,
-    headers?: Record<string, string>
-  ) {
+  static async patch(resourcePath: string, body: any, headers?: Record<string, string>) {
     const request = await fetch(`${API_ENDPOINT}${resourcePath}`, {
       method: HttpRequestMethods.PATCh,
       headers: {
@@ -52,9 +45,9 @@ class HttpClient {
         ...headers,
       },
       body: JSON.stringify(body),
-    });
-    const response = await request.json();
-    return response;
+    })
+    const response = await request.json()
+    return response
   }
 
   // Delete Method
@@ -65,11 +58,11 @@ class HttpClient {
         ...headerConfig,
         ...headers,
       },
-      credentials: 'include'
-    });
-    const response = await request.json();
-    return response;
+      credentials: 'include',
+    })
+    const response = await request.json()
+    return response
   }
 }
 
-export default HttpClient;
+export default HttpClient

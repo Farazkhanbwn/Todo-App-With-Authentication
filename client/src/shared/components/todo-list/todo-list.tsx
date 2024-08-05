@@ -1,10 +1,10 @@
-import React from "react";
-import { useTodoContext } from "@/context/todo-context/todo-context";
-import SingleTodo from "./single-todo/single-todo";
-import style from "./todo-list.module.css";
+import React from 'react'
+import { useTodoContext } from '@/context/todo-context/todo-context'
+import SingleTodo from './single-todo/single-todo'
+import style from './todo-list.module.css'
 
 const TodoList = () => {
-  const { todoList } = useTodoContext();
+  const { todoList } = useTodoContext()
 
   return (
     <div className={style.table}>
@@ -21,17 +21,13 @@ const TodoList = () => {
         <tbody>
           {todoList?.map((todo, key) => (
             <tr key={key}>
-              <SingleTodo
-                name={todo?.name}
-                id={todo?._id}
-                description={todo?.description}
-              />
+              <SingleTodo name={todo?.name} id={todo?._id} description={todo?.description} />
             </tr>
           ))}
         </tbody>
       </table>
     </div>
-  );
-};
+  )
+}
 
-export default TodoList;
+export default TodoList

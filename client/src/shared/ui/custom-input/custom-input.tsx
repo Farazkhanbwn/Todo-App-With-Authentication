@@ -1,24 +1,24 @@
-"use client";
-import React, { ChangeEvent, FC } from "react";
-import classes from "./custom-input.module.scss";
+'use client'
+import React, { ChangeEvent, FC } from 'react'
+import classes from './custom-input.module.scss'
 
 interface CustomInputProps {
-  label?: string;
-  name: string;
-  type?: "text" | "email" | "password" | "number";
-  value?: string | number;
-  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
-  placeholder?: string;
-  errorMessage?: string;
-  className?: string;
-  required?: boolean;
-  disabled?: boolean;
+  label?: string
+  name: string
+  type?: 'text' | 'email' | 'password' | 'number'
+  value?: string | number
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void
+  placeholder?: string
+  errorMessage?: string
+  className?: string
+  required?: boolean
+  disabled?: boolean
 }
 
 const CustomInput: FC<CustomInputProps> = ({
   label,
   name,
-  type = "text",
+  type = 'text',
   value,
   onChange,
   placeholder,
@@ -28,17 +28,15 @@ const CustomInput: FC<CustomInputProps> = ({
   className,
 }) => {
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    onChange?.(event);
-  };
+    onChange?.(event)
+  }
 
   return (
-    <div className={`${classes[`custom-input`]} ${className}`}>
-      {label && (
-        <label className={classes["custom-input__label"]}>{label}</label>
-      )}
+    <div className={`${classes['custom-input']} ${className}`}>
+      {label && <label className={classes['custom-input__label']}>{label}</label>}
 
       <input
-        className={classes["custom-input__box"]}
+        className={classes['custom-input__box']}
         type={type}
         name={name}
         // defaultValue={value?.toString()}
@@ -48,11 +46,9 @@ const CustomInput: FC<CustomInputProps> = ({
         required={required}
         disabled={disabled}
       />
-      {errorMessage && (
-        <div className={classes["custom-input__error"]}>{errorMessage}</div>
-      )}
+      {errorMessage && <div className={classes['custom-input__error']}>{errorMessage}</div>}
     </div>
-  );
-};
+  )
+}
 
-export default CustomInput;
+export default CustomInput

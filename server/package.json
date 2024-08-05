@@ -1,12 +1,16 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "description": "",
+  "description": "MERN Todo App With Session Cookie",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server",
-    "watch": "nodemon"
+    "watch": "nodemon",
+    "format": "prettier --write .",
+    "lint:staged": "lint-staged",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix"
   },
   "author": "",
   "license": "ISC",
@@ -20,7 +24,21 @@
     "uuid": "^10.0.0"
   },
   "devDependencies": {
+    "@eslint/js": "^9.8.0",
+    "@types/bcrypt": "^5.0.2",
+    "@types/eslint__js": "^8.42.3",
+    "@types/eslint-config-prettier": "^6.11.3",
+    "@types/node": "^22.1.0",
     "@types/uuid": "^10.0.0",
-    "nodemon": "^3.1.4"
+    "@typescript-eslint/eslint-plugin": "^8.0.0",
+    "@typescript-eslint/parser": "^8.0.0",
+    "eslint": "^9.8.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "globals": "^15.9.0",
+    "lint-staged": "^15.2.8",
+    "nodemon": "^3.1.4",
+    "prettier": "^3.3.3"
   }
 }
