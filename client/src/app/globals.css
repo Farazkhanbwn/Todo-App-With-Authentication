@@ -5,7 +5,7 @@
 :root {
     --light-gray: #f7f7f7;
     --dark-gray: #333;
-    --color-error: crimson
+    --color-error: crimson;
 }
 
 * {

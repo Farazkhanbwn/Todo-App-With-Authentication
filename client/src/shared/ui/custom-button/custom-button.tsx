@@ -1,24 +1,24 @@
-"use client";
-import React, { CSSProperties, FC } from "react";
-import { Button as AntButton } from "antd";
+'use client'
+import React, { CSSProperties, FC } from 'react'
+import { Button as AntButton } from 'antd'
 
 interface CustomButtonProps {
-  title: string;
-  size?: "large" | "middle" | "small";
-  type?: "primary" | "dashed" | "link" | "text" | "default";
-  styles?: CSSProperties;
-  classNames?: string;
-  disabled?: boolean;
-  hide?: boolean;
-  onClick?: () => void;
-  danger?: boolean;
-  loading?: boolean;
+  title: string
+  size?: 'large' | 'middle' | 'small'
+  type?: 'primary' | 'dashed' | 'link' | 'text' | 'default'
+  styles?: CSSProperties
+  classNames?: string
+  disabled?: boolean
+  hide?: boolean
+  onClick?: () => void
+  danger?: boolean
+  loading?: boolean
 }
 
 const CustomButton: FC<CustomButtonProps> = ({
   title,
-  size = "middle",
-  type = "default",
+  size = 'middle',
+  type = 'default',
   styles = {},
   classNames,
   disabled = false,
@@ -28,11 +28,11 @@ const CustomButton: FC<CustomButtonProps> = ({
   loading = false,
 }) => {
   const onButtonClick = () => {
-    onClick?.();
-  };
+    onClick?.()
+  }
 
   if (hide) {
-    return null;
+    return null
   }
 
   return (
@@ -48,7 +48,7 @@ const CustomButton: FC<CustomButtonProps> = ({
     >
       {title}
     </AntButton>
-  );
-};
+  )
+}
 
-export default CustomButton;
+export default CustomButton
